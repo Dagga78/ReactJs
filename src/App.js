@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import avatar from './images/icon.png';
 import './App.css';
 import Messages from './Messages'
+import YouTube from 'react-youtube'
 
 var genre;
 
@@ -10,6 +11,7 @@ class App extends Component {
 
     constructor(context, props) {
         super(context, props);
+
 
         this.state = {
             dernierMessage: "",
@@ -85,8 +87,27 @@ class App extends Component {
         else if (lastUserMessage.toLowerCase().includes("aven") || lastUserMessage.toLowerCase().includes("ture")) {
             genre = "d'aventure";
         }
+        else {
+            if (this.state.responseUserCount === 1) {
+                if (genre === "fantastique") {
+                    if (lastUserMessage.toLowerCase().includes("Game") || lastUserMessage.toLowerCase().includes("Thrones")) {
+                        this.chatbotSimpleReponse('https://www.youtube.com/watch?v=aAF12LNAeNI');
+                    }
+                    else if (lastUserMessage.toLowerCase().includes("Magicians")) {
+
+                    }
+                    else if (lastUserMessage.toLowerCase().includes("once") || lastUserMessage.toLowerCase().includes("upon a time")) {
+
+                    }
+                    else if (lastUserMessage.toLowerCase().includes("teen") || lastUserMessage.toLowerCase().includes("wolf")) {
+
+                    }
+                }
+            }
+        }
 
         this.setState({dialogue, message: ''});
+
 
         if (lastUserMessage.toLowerCase() === "oui" && genre !== undefined) {
             if (genre === "fantastique") {
@@ -117,6 +138,7 @@ class App extends Component {
                 this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Comedie);
                 this.setState({responseUserCount: 1});
             }
+            this.chatbotSimpleReponse("Si vous le souhaitez je peux vous presenter la bande-annonce de la série souhaiter pour cela merci d'inscrire le titre de la série à laquelle vous souhaitez vous renseigner parmi ceux de cette liste")
         }
 
         else if (lastUserMessage.toLowerCase() === "non") {
@@ -148,11 +170,8 @@ class App extends Component {
 
 
     onKeyDown = (event) => {
-        if (event.key === 'Enter' && this.state.responseUserCount === 0) {
+        if (event.key === 'Enter') {
             this.chatbotReponse();
-        }
-        if (event.key === 'Enter' && this.state.responseUserCount !== 0) {
-            this.chatbotSimpleReponse();
         }
     }
 
