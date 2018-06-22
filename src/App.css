@@ -69,6 +69,13 @@ body {
   border-bottom: 2px solid white;
   min-height: 65px;
 }
+#youtube{
+  display: none;
+}
+
+#youtubeembed{
+  display: inline;
+}
 
 .avatar {
   border-radius: 50%;

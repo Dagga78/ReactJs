@@ -3,17 +3,18 @@ import logo from './logo.svg';
 import avatar from './images/icon.png';
 import './App.css';
 import Messages from './Messages'
-import YouTube from 'react-youtube'
 
 var genre;
+var sequence = 0;
+var url = "https://www.youtube.com/embed/Ng1W_qu5aJM";
 
 class App extends Component {
 
     constructor(context, props) {
         super(context, props);
 
-
         this.state = {
+            url:"https://www.youtube.com/watch?v=Ng1W_qu5aJM",
             dernierMessage: "",
             botMessage: "",
             botName: "Jérôme",
@@ -60,100 +61,120 @@ class App extends Component {
         const lastUserMessage = this.state.message;
         let botMessage = "Je suis confus, peux-tu reformuler ta phrase ?";
 
-        if (lastUserMessage.toLowerCase().includes("fantas") || lastUserMessage.toLowerCase().includes("astique")) {
-            genre = "fantastique"
+        if (sequence === 0) {
+            if (lastUserMessage.toLowerCase().includes("fantas") || lastUserMessage.toLowerCase().includes("astique")) {
+                genre = "fantastique";
+                sequence = 1;
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("acti") || lastUserMessage.toLowerCase().includes("tion")) {
+                genre = "d'action";
+                sequence = 1;
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("come") || lastUserMessage.toLowerCase().includes("medi")) {
+                genre = "de comedie";
+                sequence = 1;
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("poli") || lastUserMessage.toLowerCase().includes("cier")) {
+                genre = "policière";
+                sequence = 1;
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("science") || lastUserMessage.toLowerCase().includes("Fiction") || lastUserMessage.toLowerCase().includes("sf")) {
+                genre = "de science-Fiction";
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("epouvante") || lastUserMessage.toLowerCase().includes("horreur")) {
+                genre = "d'epouvante-horreur";
+                sequence = 1;
+            }
+
+            else if (lastUserMessage.toLowerCase().includes("aven") || lastUserMessage.toLowerCase().includes("ture")) {
+                genre = "d'aventure";
+                sequence = 1;
+            }
+            else {
+                this.chatbotSimpleReponse(botMessage);
+                sequence = 0;
+            }
+
         }
 
-        else if (lastUserMessage.toLowerCase().includes("acti") || lastUserMessage.toLowerCase().includes("tion")) {
-            genre = "d'action";
+
+        if (sequence === 2) {
+            if (lastUserMessage.toLowerCase() === "oui") {
+                sequence = 3;
+            }
+            else if (lastUserMessage.toLowerCase() === "non") {
+                sequence = 0
+                this.chatbotSimpleReponse("Alors, Quel genre de série souhaites-tu visionner ? ")
+            }
         }
 
-        else if (lastUserMessage.toLowerCase().includes("come") || lastUserMessage.toLowerCase().includes("medi")) {
-            genre = "de comedie";
+        if (genre !== undefined && sequence === 1) {
+            sequence = 2;
+            this.chatbotSimpleReponse("Vous souhaiter donc regarder une serie " + genre + " ?")
         }
 
-        else if (lastUserMessage.toLowerCase().includes("poli") || lastUserMessage.toLowerCase().includes("cier")) {
-            genre = "policière";
+
+        if (sequence === 3) {
+            if (genre === "fantastique") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Fantastique);
+                sequence = 4;
+            }
+            else if (genre === "d'action") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Action);
+                sequence = 4;
+            }
+            else if (genre === "d'aventure") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Aventure);
+                sequence = 4;
+            }
+            else if (genre === "policière") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Policière);
+                sequence = 4;
+            }
+            else if (genre === "de science-Fiction") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.ScienceFiction);
+                sequence = 4;
+            }
+            else if (genre === "d'epouvante-horreur") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Epouvante);
+                sequence = 4;
+            }
+            else if (genre === "de comedie") {
+                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Comedie);
+                sequence = 4;
+            }
         }
 
-        else if (lastUserMessage.toLowerCase().includes("science") || lastUserMessage.toLowerCase().includes("Fiction") || lastUserMessage.toLowerCase().includes("sf")) {
-            genre = "de science-Fiction";
-        }
-
-        else if (lastUserMessage.toLowerCase().includes("epouvante") || lastUserMessage.toLowerCase().includes("horreur")) {
-            genre = "d'epouvante-horreur";
-        }
-
-        else if (lastUserMessage.toLowerCase().includes("aven") || lastUserMessage.toLowerCase().includes("ture")) {
-            genre = "d'aventure";
-        }
-        else {
-            if (this.state.responseUserCount === 1) {
-                if (genre === "fantastique") {
-                    if (lastUserMessage.toLowerCase().includes("Game") || lastUserMessage.toLowerCase().includes("Thrones")) {
-                        this.chatbotSimpleReponse('https://www.youtube.com/watch?v=aAF12LNAeNI');
-                    }
-                    else if (lastUserMessage.toLowerCase().includes("Magicians")) {
-
-                    }
-                    else if (lastUserMessage.toLowerCase().includes("once") || lastUserMessage.toLowerCase().includes("upon a time")) {
-
-                    }
-                    else if (lastUserMessage.toLowerCase().includes("teen") || lastUserMessage.toLowerCase().includes("wolf")) {
-
-                    }
+        if (sequence ===5){
+            if (genre === 'fantastique'){
+                if (lastUserMessage.toLowerCase().includes("games") || lastUserMessage.toLowerCase().includes("thrones")){
+                  url = "https://www.youtube.com/embed/Ng1W_qu5aJM";
+                  document.getElementById("youtube").style.display="inline";
+                }
+                if (lastUserMessage.toLowerCase().includes("the") || lastUserMessage.toLowerCase().includes("magicians")){
+                    url = "https://www.youtube.com/embed/Io9CnHX96Xw";
+                    document.getElementById("youtube").style.display="inline";
+                }
+                if (lastUserMessage.toLowerCase().includes("once upon") || lastUserMessage.toLowerCase().includes("time")){
+                    url = "https://www.youtube.com/embed/M8y6RAxRaXk";
+                    document.getElementById("youtube").style.display="inline";
+                }
+                if (lastUserMessage.toLowerCase().includes("teen") || lastUserMessage.toLowerCase().includes("wolf")){
+                    url = "https://www.youtube.com/embed/0geT6-h-7eM";
+                    document.getElementById("youtube").style.display="inline";
                 }
             }
         }
 
-        this.setState({dialogue, message: ''});
-
-
-        if (lastUserMessage.toLowerCase() === "oui" && genre !== undefined) {
-            if (genre === "fantastique") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Fantastique);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "d'action") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Action);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "d'aventure") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Aventure);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "policière") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Policière);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "de science-Fiction") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.ScienceFiction);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "d'epouvante-horreur") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Epouvante);
-                this.setState({responseUserCount: 1});
-            }
-            else if (genre === "de comedie") {
-                this.chatbotSimpleReponse("Tres bien voici les serie " + genre + " dont dispose ma base de donnée : " + this.state.serie.Comedie);
-                this.setState({responseUserCount: 1});
-            }
-            this.chatbotSimpleReponse("Si vous le souhaitez je peux vous presenter la bande-annonce de la série souhaiter pour cela merci d'inscrire le titre de la série à laquelle vous souhaitez vous renseigner parmi ceux de cette liste")
+        if (sequence === 4) {
+            this.chatbotSimpleReponse("Je peut vous presenter la bande annonce des serie ci-dessus, pour cela inscrivez le nom de la serie dont vous souhaitez regarder la bande annonce.");
+            sequence = 5;
         }
-
-        else if (lastUserMessage.toLowerCase() === "non") {
-            this.chatbotSimpleReponse("Alors, Quel genre de série souhaites-tu visionner ? ")
-        }
-
-        else if (this.state.responseUserCount === 0 && genre !== undefined) {
-            this.chatbotSimpleReponse("Vous souhaiter donc regarder une serie " + genre + " ?")
-        }
-
-        else {
-            this.chatbotSimpleReponse(botMessage);
-
-        }
-
 
     }
 
@@ -170,10 +191,11 @@ class App extends Component {
 
 
     onKeyDown = (event) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && this.state.message.length > 1) {
             this.chatbotReponse();
         }
     }
+
 
 
     render() {
@@ -188,14 +210,17 @@ class App extends Component {
                         </div>
                     </div>
 
-                    <div className="drapeau">
-                        <img id="imgDrapeau" src={this.state.srcDrapeau}
-                             style={{display: this.state.srcDrapeau ? "block" : "none"}} alt="drapeau" height="75"/>
-                    </div>
+
                 </header>
 
 
                 <div className="containerChat">
+                    <div id="youtube" >
+                        <iframe width="700" height="450" src={url} frameBorder="0"
+                                allow="autoplay; encrypted-media" allowFullScreen>
+
+                        </iframe>
+                    </div>
                     <div className="chat">
 
                         <div className="chat-header">
